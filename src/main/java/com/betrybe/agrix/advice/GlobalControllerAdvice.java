@@ -1,6 +1,7 @@
 package com.betrybe.agrix.advice;
 
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+
+import com.betrybe.agrix.service.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
