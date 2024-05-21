@@ -1,7 +1,6 @@
 package com.betrybe.agrix.controller;
 
 import com.betrybe.agrix.controller.dto.CropDto;
-import com.betrybe.agrix.entity.Crop;
 import com.betrybe.agrix.service.CropService;
 import com.betrybe.agrix.service.exception.CropNotFoundException;
 import java.util.List;
@@ -25,15 +24,13 @@ public class CropController {
   }
 
   @GetMapping("/{id}")
-  public CropDto getCropById(@PathVariable Long id) throws CropNotFoundException {
+  public CropDto getById(@PathVariable Long id) throws CropNotFoundException {
     return CropDto.fromEntity(cropService.findById(id));
   }
 
   @GetMapping
   public List<CropDto> getAllCrops() {
-    List<Crop> allCrops = cropService.findAll();
-    return allCrops.stream().map(CropDto::fromEntity).toList();
+    return cropService.findAll().stream().map(CropDto::fromEntity).toList();
   }
-
 
 }
