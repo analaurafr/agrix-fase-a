@@ -1,8 +1,11 @@
 package com.betrybe.agrix.service;
 
 import com.betrybe.agrix.entity.Crop;
+import com.betrybe.agrix.entity.Farm;
 import com.betrybe.agrix.repository.CropRepository;
+import com.betrybe.agrix.repository.FarmRepository;
 import com.betrybe.agrix.service.exception.CropNotFoundException;
+import com.betrybe.agrix.service.exception.FarmNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CropService {
   private final CropRepository cropRepository;
+  private final FarmService farmService;
+  private final FarmRepository farmRepository;
 
   /**
    * Instantiates a new Crop service.
@@ -20,8 +25,11 @@ public class CropService {
    * @param cropRepository the crop repository
    */
   @Autowired
-  public CropService(CropRepository cropRepository) {
+  public CropService(CropRepository cropRepository, FarmService farmService,
+      FarmRepository farmRepository) {
     this.cropRepository = cropRepository;
+    this.farmService = farmService;
+    this.farmRepository = farmRepository;
   }
 
   /**
@@ -47,10 +55,11 @@ public class CropService {
   /**
    * Create crop.
    *
-   * @param crop the crop
+   * @param farmId
+   * @param crop   the crop
    * @return the crop
    */
-  public Crop create(Crop crop) {
+  public Crop create(Long farmId, Crop crop) {
     return cropRepository.save(crop);
   }
 
@@ -82,5 +91,21 @@ public class CropService {
     Crop crop = findById(id);
     cropRepository.deleteById(id);
     return crop;
+  }
+
+  public Crop setFarmCrop(Long cropId, Long farmId)
+      throws CropNotFoundException, FarmNotFoundException {
+    Crop crop = findById(cropId);
+    Farm farm = farmService.findById(farmId);
+
+    crop.setFarm(farm);
+
+    return cropRepository.save(crop);
+  }
+
+  public List<Crop> findAllByFarmId(Long farmId) throws FarmNotFoundException {
+    Farm farm = farmRepository.findById(farmId).orElseThrow(FarmNotFoundException::new);
+
+    return cropRepository.findByFarmId(farmId);
   }
 }

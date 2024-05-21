@@ -27,12 +27,12 @@ public class FarmService {
   /**
    * Find by id farm.
    *
-   * @param id the id
+   * @param farmId the id
    * @return the farm
    * @throws FarmNotFoundException the farm not found exception
    */
-  public Farm findById(Long id) throws FarmNotFoundException {
-    return farmRepository.findById(id).orElseThrow(FarmNotFoundException::new);
+  public Farm findById(Long farmId) throws FarmNotFoundException {
+    return farmRepository.findById(farmId).orElseThrow(FarmNotFoundException::new);
   }
 
   /**
