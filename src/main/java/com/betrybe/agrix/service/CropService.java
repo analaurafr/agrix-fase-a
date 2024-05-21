@@ -23,6 +23,8 @@ public class CropService {
    * Instantiates a new Crop service.
    *
    * @param cropRepository the crop repository
+   * @param farmService    the farm service
+   * @param farmRepository the farm repository
    */
   @Autowired
   public CropService(CropRepository cropRepository, FarmService farmService,
@@ -55,7 +57,7 @@ public class CropService {
   /**
    * Create crop.
    *
-   * @param farmId
+   * @param farmId the farm id
    * @param crop   the crop
    * @return the crop
    */
@@ -93,6 +95,15 @@ public class CropService {
     return crop;
   }
 
+  /**
+   * Sets farm crop.
+   *
+   * @param cropId the crop id
+   * @param farmId the farm id
+   * @return the farm crop
+   * @throws CropNotFoundException the crop not found exception
+   * @throws FarmNotFoundException the farm not found exception
+   */
   public Crop setFarmCrop(Long cropId, Long farmId)
       throws CropNotFoundException, FarmNotFoundException {
     Crop crop = findById(cropId);
@@ -103,6 +114,13 @@ public class CropService {
     return cropRepository.save(crop);
   }
 
+  /**
+   * Find all by farm id list.
+   *
+   * @param farmId the farm id
+   * @return the list
+   * @throws FarmNotFoundException the farm not found exception
+   */
   public List<Crop> findAllByFarmId(Long farmId) throws FarmNotFoundException {
     Farm farm = farmRepository.findById(farmId).orElseThrow(FarmNotFoundException::new);
 
